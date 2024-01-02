@@ -41,6 +41,7 @@
                     <a href="#"><i class="ik ik-dollar-sign"></i><span>{{ __('Income')}}</span></a>
                     <div class="submenu-content">
                         <a href="{{url('income/invoice')}}" class="menu-item {{ ($segment1 == 'income' && $segment2 == 'invoice') ? 'active' : '' }}">{{ __('Invoice')}}</a>
+                        <a href="" class="menu-item ">{{ __('Invoice Categories')}}</a>
                         {{-- <a href="{{url('income/revenue')}}" class="menu-item {{ ($segment1 == 'income' && $segment2 == 'revenue') ? 'active' : '' }}">{{ __('Revenue')}}</a> --}}
                     </div>
                 </div>
