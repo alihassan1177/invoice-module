@@ -1,0 +1,14 @@
+v3.5.0 Relese Note:
+New Features:
+===============================
+# Added Accounting and Billing UI: This feature includes presale,bank, bill, invoices, revenue, payment, budget control, goal, and assets. This new addition will help streamline your financial operations and provide a more comprehensive view of your finances.
+
+
+Improvements:
+================================
+# Improved Interactive UI for POS (Point of Sale) page: We have made improvements to the POS page to enhance the user experience and provide a more interactive interface. User can add products to cart and input discount
+
+# Fixed Add Product, Add Sale, Add Purchase button position
+# Improved UI for categories page with mock data
+
+Details - https://themicly.github.io/Radmin-Laravel-Admin-Starter-Kit/release-notes/
