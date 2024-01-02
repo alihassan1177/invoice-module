@@ -1,5 +1,5 @@
 @extends('accounting.layout')
-@section('title', 'Create Invoice')
+@section('title', 'Create Invoice Category')
 @section('content')
 <div class="container-fluid">
     <div class="page-header">

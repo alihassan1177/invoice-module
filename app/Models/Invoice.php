@@ -26,4 +26,20 @@ class Invoice extends Model
     function invoice_category()  {
         return $this->hasOne(InvoiceCategory::class, "invoice_category_id", "id");
     }
+
+    function user() {
+        return $this->hasOne(User::class, "user_id", "id");
+    }
+
+    function getDueAmountAttribute() {
+        if ($this->paid_amount) {
+            return $this->total_amount - $this->paid_amount;
+        }
+
+        return $this->total_amount;
+    }
+
+    function getFormattedStatusAttribute() {
+        return strtoupper(str_replace("_", "", $this->status));        
+    }
 }

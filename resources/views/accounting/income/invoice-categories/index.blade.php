@@ -1,5 +1,5 @@
 @extends('accounting.layout')
-@section('title', 'Invoice')
+@section('title', 'Invoice Categories' )
 @section('content')
 <div class="container-fluid">
     <div class="page-header">
@@ -44,25 +44,9 @@
 
                     <div class="col col-sm-8">
                         <div class="card-search with-adv-search dropdown">
-                            <form action="">
-                                <input type="text" class="form-control global_filter" id="global_filter" placeholder="Search.." required="">
+                            <form action="{{ route('income.invoice-categories.index') }}">
+                                <input type="text" name="q" value="{{ request('q') }}" class="form-control global_filter" id="global_filter" placeholder="Search..">
                                 <button type="submit" class="btn btn-icon"><i class="ik ik-search"></i></button>
-                                <button type="button" id="adv_wrap_toggler" class="adv-btn ik ik-chevron-down dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                                <div class="adv-search-wrap dropdown-menu dropdown-menu-right" aria-labelledby="adv_wrap_toggler">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control column_filter" id="col1_filter" placeholder="Name" data-column="1">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control column_filter" id="col2_filter" placeholder="Year" data-column="2">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-theme">Search</button>
-                                </div>
                             </form>
                         </div>
                     </div>
@@ -72,22 +56,33 @@
                     <table id="advanced_table" class="table">
                         <thead>
                             <tr>
-                                <th>Category ID</th>
+                                <th>#</th>
                                 <th>Name</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @if (!count($invoice_categories))
+                                <tr>
+                                    <td colspan="3">
+                                        <p class="text-center">No Categories Found</p>
+                                    </td>
+                                </tr>
+                            @endif
+
                             @foreach ($invoice_categories as $invoice_category)
                                 <tr>
-                                    <td>{{ $invoice_category->id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $invoice_category->name }}</td>
                                     <td>
                                         <a href="{{ route('income.invoice-categories.show', $invoice_category->id) }}"><i class="ik ik-eye f-16 mr-15 text-primary"></i></a>
                                         <a href="{{ route('income.invoice-categories.edit', $invoice_category->id) }}"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>
                                         <form action="{{ route('income.invoice-categories.destroy', $invoice_category->id) }}" method="post">
+                                            @csrf
                                             @method("DELETE")
-                                            <i class="ik ik-trash-2 f-16 text-red"></i>
+                                            <button onclick="return confirm('Are you sure you want to delete this item?')" type="submit" class="p-0 m-0 btn bg-white">
+                                                <i class="ik ik-trash-2 f-16 text-red"></i>
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>

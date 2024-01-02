@@ -13,9 +13,13 @@ class InvoiceCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $invoice_categories = InvoiceCategory::latest()->get();
+        if ($request->q) {
+            $invoice_categories = InvoiceCategory::where('name', 'LIKE' ,'%'.$request->q.'%')->latest()->get();
+        }else{
+            $invoice_categories = InvoiceCategory::latest()->get();
+        }
         return view('accounting.income.invoice-categories.index', compact('invoice_categories'));
     }
 
@@ -124,6 +128,6 @@ class InvoiceCategoryController extends Controller
             info("ERROR : " . $e->getMessage());
         }
 
-        return redirect()->route('income.invoice-categories.destroy');
+        return redirect()->route('income.invoice-categories.index');
     }
 }
