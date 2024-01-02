@@ -22,4 +22,8 @@ class Invoice extends Model
         "status",
         "notes"
     ];
+
+    function invoice_category()  {
+        return $this->hasOne(InvoiceCategory::class, "invoice_category_id", "id");
+    }
 }

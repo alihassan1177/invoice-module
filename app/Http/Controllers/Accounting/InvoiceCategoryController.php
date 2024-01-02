@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Accounting;
 
 use App\Http\Controllers\Controller;
+use App\Models\InvoiceCategory;
 use Illuminate\Http\Request;
 
 class InvoiceCategoryController extends Controller
@@ -14,7 +15,8 @@ class InvoiceCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $invoice_categories = InvoiceCategory::latest()->get();
+        return view('accounting.income.invoice-categories.index', compact('invoice_categories'));
     }
 
     /**
@@ -24,7 +26,7 @@ class InvoiceCategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('accounting.income.invoice-categories.create');
     }
 
     /**
@@ -35,7 +37,21 @@ class InvoiceCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = validator()->make($request->all(), [
+            'name' => 'required|max:200'
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            InvoiceCategory::create($validator->validated());
+        } catch (\Exception $e) {
+            info("ERROR : " . $e->getMessage());
+        }
+
+        return redirect()->route('income.invoice-categories.index');
     }
 
     /**
@@ -46,7 +62,8 @@ class InvoiceCategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $invoice_category = InvoiceCategory::with('invoices')->findOrFail($id);
+        return view('accounting.income.invoice-categories.show', compact('invoice_category'));
     }
 
     /**
@@ -57,7 +74,8 @@ class InvoiceCategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $invoice_category = InvoiceCategory::findOrFail($id);
+        return view('accounting.income.invoice-categories.edit', compact('invoice_category'));
     }
 
     /**
@@ -69,7 +87,23 @@ class InvoiceCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $invoice_category = InvoiceCategory::findOrFail($id);
+
+        $validator = validator()->make($request->all(), [
+            'name' => 'required|max:200'
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            $invoice_category->update($validator->validated());
+        } catch (\Exception $e) {
+            info("ERROR : " . $e->getMessage());
+        }
+
+        return redirect()->route('income.invoice-categories.index');
     }
 
     /**
@@ -80,6 +114,16 @@ class InvoiceCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $invoice_category = InvoiceCategory::with('invoices')->findOrFail($id);
+
+        try {
+            if (!count($invoice_category->invoices) ) {
+                $invoice_category->delete();
+            }
+        } catch (\Exception $e) {
+            info("ERROR : " . $e->getMessage());
+        }
+
+        return redirect()->route('income.invoice-categories.destroy');
     }
 }

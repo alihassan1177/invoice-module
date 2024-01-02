@@ -12,4 +12,8 @@ class InvoiceCategory extends Model
     protected $fillable = [
         "name"
     ];
+
+    function invoices() {
+        return $this->hasMany(Invoice::class, "invoice_category_id", "id");
+    }
 }
