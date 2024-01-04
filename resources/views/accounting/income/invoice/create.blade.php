@@ -57,7 +57,6 @@
                         </div>
 
                     </div>
-
                     <div class="form-group">
                         <label>Issue Date</label>
                         <input type="text" class="form-control datetimepicker-input" id="datepicker" data-toggle="datetimepicker" data-target="#datepicker" placeholder="Select Date">

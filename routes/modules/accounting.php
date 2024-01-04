@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Accounting\InvoiceCategoryController;
 use App\Http\Controllers\Accounting\InvoiceController;
+use App\Http\Controllers\Accounting\TaxController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/accounting', function () { return view('accounting.dashboard'); });
@@ -16,9 +17,11 @@ Route::group(["prefix" => "income", "as" => "income."], function(){
     });
 
     Route::resource("invoice-categories", InvoiceCategoryController::class);
-
+    
     Route::get('/revenue', function () { return view('accounting.income.revenue'); })->name('revenue');
 });
+
+Route::resource("taxes", TaxController::class)->only(['create', 'store', 'edit', 'update', 'index']);
 
 Route::get('/expense/bill', function () { return view('accounting.expense.bill.list'); });
 Route::get('/expense/bill/create', function () { return view('accounting.expense.bill.create'); });

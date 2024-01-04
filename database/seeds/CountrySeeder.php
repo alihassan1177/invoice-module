@@ -1,18 +1,16 @@
 <?php
 
-use Database\Seeders\CountrySeeder;
-use Database\Seeders\PermissionSeeder;
-use Database\Seeders\RolePermissionSeeder;
-use Database\Seeders\RoleSeeder;
-use Database\Seeders\UserSeeder;
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Country;
 use Illuminate\Support\Facades\File;
 
-class DatabaseSeeder extends Seeder
+class CountrySeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
@@ -31,12 +29,5 @@ class DatabaseSeeder extends Seeder
         }
 
         Country::insert($data);
-
-        $this->call([
-            RoleSeeder::class,
-            PermissionSeeder::class,
-            UserSeeder::class,
-            RolePermissionSeeder::class,
-        ]);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Enums;
+
 enum InvoiceStatus : string {
     case Paid = "paid";
     case PartiallyPaid = "partialy_paid";

@@ -54,6 +54,10 @@
                     </div>
                 </div>
 
+                <div class="nav-item @if(request()->routeIs('taxes.*')) {{ "active" }} @endif">
+                    <a href="{{ route('taxes.index') }}"><i class="ik ik-bar-chart-2"></i><span>{{ __('Taxes')}}</span></a>
+                </div>
+
                 {{-- <div class="nav-item {{ ($segment1 == 'budget-planner') ? 'active' : '' }}">
                     <a href="{{url('budget-planner')}}"><i class="ik ik-briefcase"></i><span>{{ __('Budget Planner')}}</span></a>
                 </div>
