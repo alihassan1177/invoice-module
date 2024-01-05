@@ -142,7 +142,29 @@
                                 </thead>
                                 <tbody class="product-body">
     
-    
+                                    @error('products')                                        
+                                    <tr>
+                                        <td colspan="5">
+                                            <span class="text-danger">{{ $message }}</span>
+                                        </td>
+                                    </tr>
+                                    @enderror
+
+                                    @error('total_amount')                                        
+                                    <tr>
+                                        <td colspan="5">
+                                            <span class="text-danger">{{ $message }}</span>
+                                        </td>
+                                    </tr>
+                                    @enderror
+
+                                    @error('tax_percentage')                                        
+                                    <tr>
+                                        <td colspan="5">
+                                            <span class="text-danger">{{ $message }}</span>
+                                        </td>
+                                    </tr>
+                                    @enderror
     
     
                                 </tbody>

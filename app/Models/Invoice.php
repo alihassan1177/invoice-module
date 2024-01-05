@@ -32,18 +32,18 @@ class Invoice extends Model
         "due_date",
         "total_amount",
         "paid_amount",
-        "tax_amount",
+        "tax_percentage",
         "products",
         "status",
         "notes"
     ];
 
     function invoice_category()  {
-        return $this->hasOne(InvoiceCategory::class, "invoice_category_id", "id");
+        return $this->hasOne(InvoiceCategory::class, "id", "invoice_category_id");
     }
 
     function user() {
-        return $this->hasOne(User::class, "user_id", "id");
+        return $this->hasOne(User::class, "id", "user_id");
     }
 
     function getDueAmountAttribute() {

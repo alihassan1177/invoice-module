@@ -72,8 +72,8 @@
                                 <td>#{{ $invoice->invoice_no }}</td>
                                 <td>{{ $invoice->user->name }}</td>
                                 <td>{{ $invoice->invoice_category->name }}</td>
-                                <td>{{ \Carbon\Carbon::parse($invoice_category->issue_date)->isoFormat('LL') }}</td>
-                                <td>{{ \Carbon\Carbon::parse($invoice_category->due_date)->isoFormat('LL') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($invoice->issue_date)->isoFormat('LL') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($invoice->due_date)->isoFormat('LL') }}</td>
                                 <td>{{ $invoice->due_amount }}</td>
                                 <td>{{ $invoice->total_amount }}</td>
                                 <td>{{ $invoice->formatted_status }}</td>

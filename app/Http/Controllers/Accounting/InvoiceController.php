@@ -30,8 +30,27 @@ class InvoiceController extends Controller
     function store(Request $request)
     {
         $validator  = validator()->make($request->all(), [
-            ''
+            'invoice_category_id' => "required|exists:invoice_categories,id",
+            'user_id' => 'required|exists:users,id',
+            'products' => 'required',
+            'tax_percentage' => 'required',
+            'total_amount' => 'required',
+            'notes' => 'required',
+            'issue_date' => 'required',
+            'due_date' => 'required'
         ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            Invoice::create($validator->validated());
+        } catch (\Exception $e) {
+            info("ERROR : " . $e->getMessage());
+        }
+
+        return redirect()->route('income.invoice.index');
     }
 
     function edit()
