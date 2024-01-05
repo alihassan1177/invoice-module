@@ -4,10 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\InvoiceStatus;
 
 class Invoice extends Model
 {
     use HasFactory;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $prefix = '#INC';
+            $latestId = static::max('id');
+            $nextId = $latestId + 1;
+            $model->invoice_no = $prefix . str_pad($nextId, 5, '0', STR_PAD_LEFT);
+
+            $model->status = InvoiceStatus::Draft;
+        });
+    }
 
     protected $fillable = [
         "invoice_no",
@@ -17,7 +32,7 @@ class Invoice extends Model
         "due_date",
         "total_amount",
         "paid_amount",
-        "tax_percentage",
+        "tax_amount",
         "products",
         "status",
         "notes"

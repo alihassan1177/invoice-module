@@ -30,125 +30,288 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-3 pr-0">
-            <div class="card mb-0">
-                <div class="card-body">
-                    <div class="form-group">
-                        <label>Invoice No</label>
-                        <input type="text" class="form-control" placeholder="Porposal No" value="#PRO000045" readonly>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-sm-10 pr-0">
-                                <label>Customer</label>
+    <form method="POST" id="invoice-form" action="{{ route('income.invoice.store') }}">
+        @csrf
+        <div class="row">
+            <div class="col-md-3 pr-0">
+                <div class="card mb-0">
+                    <div class="card-body">
 
-                                <select class="form-control">
-                                    <option selected="selected" value="">Select Customer</option>
-                                    <option value="1">Alex Ferguson</option>
-                                    <option value="2">John Doe</option>
-                                </select>
+                        <input type="hidden" name="products" id="products">
+                        <input type="hidden" name="total_amount" id="total_amount">
+                        <input type="hidden" name="tax_percentage" id="tax_percentage">
 
-                            </div>
-                            <div class="col-sm-2 pl-1 pt-1">
-                                <button type="button" class="mt-4 btn btn-sm btn-primary" data-toggle="modal" data-target="#CustomerAdd">+</button>
-                            </div>
-
+                        <div class="form-group">
+                            <label>Tax Rate</label>
+    
+                            <select id="tax_rate" class="form-control">
+                                <option selected="selected" value="">Select Country</option>
+                                @foreach ($countries as $country)
+                                <option value="{{ $country->tax->tax_percentage }}">{{ $country->name }} {{
+                                    $country->tax->tax_percentage."%" }}</option>
+                                @endforeach
+                            </select>
+                            @error('user_id')
+                            <span class="text-danger">
+                                {{ $message }}
+                            </span>
+                            @enderror
+    
+                        </div>
+    
+                        <div class="form-group">
+                            <label>Customer</label>
+    
+                            <select name="user_id" class="form-control">
+                                <option selected="selected" value="">Select Customer</option>
+                                @foreach ($customers as $customer)
+                                <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                                @endforeach
+    
+                            </select>
+                            @error('user_id')
+                            <span class="text-danger">
+                                {{ $message }}
+                            </span>
+                            @enderror
+    
+                        </div>
+    
+                        <div class="form-group">
+                            <label>Issue Date</label>
+                            <input type="date" name="issue_date" class="form-control" placeholder="Select Date">
+                            @error('issue_date')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
 
+                        <div class="form-group">
+                            <label>Due Date</label>
+                            <input type="date" name="due_date" class="form-control" placeholder="Select Date">
+                            @error('due_date')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+    
+                        <div class="form-group">
+                            <label>Invoice Category</label>
+    
+                            <select name="invoice_category_id" class="form-control">
+                                <option selected="selected" value="">Select Category</option>
+                                @foreach ($invoice_categories as $invoice_category)
+                                <option value="{{ $invoice_category->id }}">{{ $invoice_category->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('invoice_category_id')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+    
+                        <div class="form-group">
+                            <label>Note</label>
+                            <textarea name="notes" class="form-control h-123" placeholder="Enter Note"></textarea>
+                            @error('notes')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+    
                     </div>
-                    <div class="form-group">
-                        <label>Issue Date</label>
-                        <input type="text" class="form-control datetimepicker-input" id="datepicker" data-toggle="datetimepicker" data-target="#datepicker" placeholder="Select Date">
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="card mb-0">
+                    <div class="card-header">
+                        <h3>Product & Services</h3>
+                        <div class="card-header-right">
+                            <button type="button" class="btn btn-success add-item"><i class="ik ik-plus"></i> Add
+                                Item</button>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Due Date</label>
-                        <input type="text" class="form-control datetimepicker-input" id="datepicker" data-toggle="datetimepicker" data-target="#datepicker" placeholder="Select Date">
-                    </div>
-                    <div class="form-group">
-                        <label>Category</label>
-
-                        <select class="form-control">
-                            <option selected="selected" value="">Select Category</option>
-                            <option value="1">Category 1</option>
-                            <option value="2">Category 2</option>
-                            <option value="3">Category 3</option>
-                            <option value="4">Category 4</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Note</label>
-                        <textarea class="form-control h-123" name="note" placeholder="Enter Note"></textarea>
+                    <div class="card-body">
+                        <div class="salestable">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="wp-40">Item</th>
+                                        <th class="wp-10">Quantity</th>
+                                        <th class="wp-20">Unit Price</th>
+                                        <th class="wp-15">Discount</th>
+                                        <th class="wp-15 text-right">Sub Total</th>
+                                        <th class="wp-15 text-right"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="product-body">
+    
+    
+    
+    
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th class="border-0" colspan="3"></th>
+                                        <th class="border-0">Total</th>
+                                        <th id="total" class="text-right border-0">0</th>
+                                        <td class="border-0"></td>
+                                    </tr>
+    
+                                    <tr>
+                                        <td class="border-0" colspan="3"></td>
+                                        <td>Tax (<span id="tax-per">0</span>%)</td>
+                                        <td id="tax" class="text-right">0</td>
+                                        <td></td>
+                                    </tr>
+    
+                                    <tr>
+                                        <th class="border-0" colspan="3"></th>
+                                        <th>Grand Total</th>
+                                        <th id="grand-total" class="text-right">0.00</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div class="form-group text-right">
+                                <div type="submit" class="submit-btn btn btn-primary">Save</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-9">
-            <div class="card mb-0">
-                <div class="card-header">
-                    <h3>Product & Services</h3>
-                    <div class="card-header-right">
-                    <button type="button" class="btn btn-success add-product-item"><i class="ik ik-plus"></i> Add Item</button>
-                        </div>
-                </div>
-                <div class="card-body">
-                    <div class="salestable">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="wp-40">Item</th>
-                                    <th class="wp-10">Quantity</th>
-                                    <th class="wp-20">Unit Price</th>
-                                    <th class="wp-15">Discount</th>
-                                    <th class="wp-15 text-right">Sub Total</th>
-                                    <th class="wp-15 text-right"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr id="product-base-content" class="base-tr">
-                                    <td class="pl-0"><input type="text" name="item" class="form-control hm-30" placeholder="Enter product/service name"></td>
-                                    <td><input type="text" name="quantity" class="form-control w-60 text-center hm-30" placeholder="Quantity"> </td>
-                                    <td><input type="text" name="unit_price" class="form-control  hm-30" placeholder="price"></td>
-                                    <td><input type="text" name="discount" class="form-control w-60 text-center hm-30" placeholder="discount"></td>
-                                    <td class="text-right">0.00</td>
-                                    <td><i class="ik ik-trash-2 f-16 text-red remove-second-parent cursor-pointer"></i></td>
-                                </tr>
-                                <tr id="product-line-separator">
-                                    <td colspan="6"></td>
-                                </tr>
-                                <tr>
-                                    <th class="border-0" colspan="3"></th>
-                                    <th class="border-0">Total</th>
-                                    <th class="text-right border-0">0.00</th>
-                                    <td class="border-0"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-0" colspan="3"></td>
-                                    <td>Tax (<span id="tax-per">10.00</span>%)</td>
-                                    <td class="text-right">0.00</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-0" colspan="3"></td>
-                                    <td>Discount</td>
-                                    <td class="text-right">0.00</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <th class="border-0" colspan="3"></th>
-                                    <th>Grand Total</th>
-                                    <th class="text-right">0.00</th>
-                                    <th></th>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="form-group text-right">
-                            <div type="submit" class="btn btn-primary">Save</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    </form>
 </div>
+
+
+<script>
+
+
+
+    let doc = document
+    
+    let submitButton = doc.querySelector(".submit-btn")
+    submitButton.addEventListener("click", ()=> {
+        doc.querySelector("#invoice-form").submit()
+    })
+
+    
+    let countries = {!! json_encode($countries) !!}
+    let taxPercentageSpan = doc.querySelector("#tax-per")
+    let taxRateSelect = doc.querySelector("#tax_rate")
+    let rowWrapper = doc.querySelector(".product-body")
+    let addProductItemBtn = doc.querySelector(".add-item")
+    let totalSpan = doc.querySelector("#total")
+    let taxSpan = doc.querySelector("#tax")
+    let grandTotalSpan = doc.querySelector("#grand-total")
+    
+    let totalAmountInp = doc.querySelector("#total_amount")
+    let productsInp = doc.querySelector("#products")
+    let taxPercentInp = doc.querySelector("#tax_percentage")
+
+    let products = {}
+    let state = {
+        count : 0,
+        total : 0,
+        tax : 0,
+        grand_total : 0,
+        tax_amount : 0
+    }
+
+    function addProductItem(index) {
+        products[index] = {
+            unit_price : 0,
+            discount : 0,
+            quantity : 0,
+            sub_total : 0
+        }
+
+        let productItem = `
+            <td class="pl-0">
+                <input required data-index="${index}" type="text" oninput="getValue(this)" name="item" class="form-control hm-30"
+                    placeholder="Enter product/service name">
+            </td>
+            <td><input required data-index="${index}" oninput="getValue(this)" min="0" value="0" type="number" name="quantity" class="form-control w-60 text-center hm-30"
+                    placeholder="Quantity"> </td>
+            <td><input required data-index="${index}" oninput="getValue(this)" min="0" value="0" type="number" name="unit_price" class="form-control  hm-30"
+                    placeholder="price"></td>
+            <td><input required data-index="${index}" oninput="getValue(this)" min="0" value="0" type="number" name="discount" class="form-control w-60 text-center hm-30"
+                    placeholder="discount"></td>
+            <td data-index="${index}" class="text-right sub-total">0.00</td>
+            <td><i data-index="${index}" class="ik ik-trash-2 f-16 text-red remove-second-parent cursor-pointer"></i>
+            </td>
+        `
+
+        let tr = doc.createElement("tr")
+        tr.classList.add("base-tr")
+        tr.innerHTML = productItem
+        rowWrapper.appendChild(tr)
+
+        let removeItemBtn = doc.querySelector(`.remove-second-parent[data-index="${index}"]`)
+        removeItemBtn.addEventListener('click', ()=> {
+            delete products[index]
+            calculateTotal()
+        })
+            
+    }
+
+    addProductItem(state.count)
+
+    function getValue(e) {
+        let currentItem = products[e.dataset.index]
+        currentItem[e.name] = e.value
+        
+        let subtotalSpan = doc.querySelector(`.sub-total[data-index='${e.dataset.index}']`)
+        let subtotal = (currentItem.unit_price * currentItem.quantity) - currentItem.discount
+        
+        subtotalSpan.innerText = subtotal
+        currentItem.sub_total = subtotal
+        // console.log(subtotal)
+        // console.log(state)        
+
+        calculateTotal()
+
+        productsInp.value = JSON.stringify(products)
+    }
+
+    function calculateTotal() {
+        let total = 0
+        Object.keys(products).forEach(key => {
+            let product = products[key]
+            total += product.sub_total
+        });
+        state.total = total
+        totalSpan.innerText = state.total
+
+        totalAmountInp.value = state.total
+
+        calculateTax()
+        calculateGrandTotal()
+    }
+
+    function calculateTax(){
+        state.tax_amount = (state.tax / 100) * state.total
+        taxSpan.innerText = state.tax_amount
+    }
+
+    function calculateGrandTotal() {
+        state.grand_total = state.total + state.tax_amount
+        grandTotalSpan.innerText = state.grand_total
+    }
+
+    addProductItemBtn.addEventListener("click", ()=>{
+        state.count += 1
+        addProductItem(state.count)
+    })
+    
+    taxRateSelect.addEventListener('change', (e)=>{
+        state.tax = e.target.value == "" ? 0 : e.target.value
+        taxPercentageSpan.innerText = state.tax 
+
+        taxPercentInp.value = state.tax
+
+        calculateTax()
+        calculateGrandTotal()
+    })
+
+
+</script>
+
 @endsection

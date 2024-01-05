@@ -106,7 +106,37 @@
                                         </div>
                                         <input type="hidden" id="token" name="token" value="{{ csrf_token() }}">
                                     </div>
+
                                 </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="account_no">{{ __('Account No Or CIN Number')}}<span class="text-red">*</span></label>
+                                        <input id="account_no" type="text" class="form-control @error('text') is-invalid @enderror" name="account_no" value="{{ old('account_no') }}" placeholder="Enter account no or CIN number" required>
+                                        <div class="help-block with-errors" ></div>
+    
+                                        @error('account_no')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="email">{{ __('Address and Designation')}}<span class="text-red">*</span></label>
+                                        <textarea name="address" id="address" class="form-control" cols="30" rows="10">{{ old('address') }}</textarea>
+                                        <div class="help-block with-errors" ></div>
+
+                                        @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">{{ __('Submit')}}</button>

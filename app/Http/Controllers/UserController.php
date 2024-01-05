@@ -102,6 +102,8 @@ class UserController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => $request->password,
+                'account_no' => $request->account_no,
+                'address' => $request->address
             ]);
 
 
@@ -160,6 +162,8 @@ class UserController extends Controller
             'name' => 'required | string ',
             'email' => 'required | email',
             'role' => 'required',
+            'address' => 'required',
+            'account_no' => 'required'
         ]);
 
         // check validation for password match
@@ -178,6 +182,8 @@ class UserController extends Controller
                 $payload = [
                     'name' => $request->name,
                     'email' => $request->email,
+                    'address' => $request->address,
+                    'account_no' => $request->account_no
                 ];
                 // update password if user input a new password
                 if (isset($request->password) && $request->password) {

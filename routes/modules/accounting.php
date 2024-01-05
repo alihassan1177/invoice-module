@@ -12,6 +12,7 @@ Route::group(["prefix" => "income", "as" => "income."], function(){
     Route::group(["prefix" => "invoice", "as" => "invoice."], function(){
         Route::get('/', [InvoiceController::class, 'index'])->name('index');
         Route::get('/create', [InvoiceController::class, 'create'])->name("create");
+        Route::post('/store', [InvoiceController::class, 'store'])->name("store");
         Route::get('/edit/{id}', [InvoiceController::class, 'edit'])->name('edit');
         Route::get('/view/{id}', [InvoiceController::class, 'view'])->name('view');
     });
