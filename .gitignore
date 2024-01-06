@@ -14,3 +14,4 @@ yarn-error.log
 docker-compose.yml
 docker-conf/database
 docker-conf/php/Dockerfile
+*.zip
