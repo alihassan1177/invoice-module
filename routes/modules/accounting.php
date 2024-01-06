@@ -22,7 +22,7 @@ Route::group(["prefix" => "income", "as" => "income."], function(){
     Route::get('/revenue', function () { return view('accounting.income.revenue'); })->name('revenue');
 });
 
-Route::resource("taxes", TaxController::class)->only(['create', 'store', 'edit', 'update', 'index']);
+Route::resource("taxes", TaxController::class)->except('show');
 
 Route::get('/expense/bill', function () { return view('accounting.expense.bill.list'); });
 Route::get('/expense/bill/create', function () { return view('accounting.expense.bill.create'); });

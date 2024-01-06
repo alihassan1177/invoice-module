@@ -98,4 +98,10 @@ class TaxController extends Controller
         return redirect()->route('taxes.index');
     }
 
+    function destroy($id) {
+        $tax = Tax::findOrFail($id);
+        $tax->delete();
+        return redirect()->route('taxes.index');        
+    }
+
 }

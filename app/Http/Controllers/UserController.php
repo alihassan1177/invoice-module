@@ -88,6 +88,49 @@ class UserController extends Controller
         }
     }
 
+    public function store_api(UserRequest $request)
+    {
+        try {
+
+            $customer_role_id = 6;
+            // store user information
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'account_no' => $request->account_no,
+                'address' => $request->address,
+                'password' => bcrypt('password'),
+                'role' => $customer_role_id
+            ]);
+
+            if ($user) {
+                // assign new role to the user
+                $user->syncRoles($customer_role_id);
+                
+                return response()->json([
+                    'customer' => $user,
+                    'status' => true,
+                    'message' => 'success'
+                ]);
+            }
+
+            return response()->json([
+                'status' => false,
+                'message' => 'customer creation failed'
+            ]);
+
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            
+            return response()->json([
+                'message' => 'failed',
+                'status' => false,
+                'bug' => $bug
+            ]);
+
+        }
+    }
+
     /**
      * Store User
      *

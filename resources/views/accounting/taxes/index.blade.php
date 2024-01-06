@@ -68,7 +68,13 @@
                                     <td>{{ $tax->tax_percentage."%" }}</td>
                                     <td>
                                         <a href="{{ route('taxes.edit', $tax->id) }}"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>
-           
+                                        <form action="{{ route('taxes.destroy', $tax->id) }}" method="post">
+                                            @csrf
+                                            @method("DELETE")
+                                            <button onclick="return confirm('Are you sure you want to delete this item?')" type="submit" class="p-0 m-0 btn bg-white">
+                                                <i class="ik ik-trash-2 f-16 text-red"></i>
+                                            </button>
+                                        </form>           
                                     </td>
                                 </tr>
                             @endforeach

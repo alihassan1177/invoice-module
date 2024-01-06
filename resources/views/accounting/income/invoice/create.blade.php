@@ -1,6 +1,8 @@
 @extends('accounting.layout')
 @section('title', 'Create Invoice')
 @section('content')
+
+
 <div class="container-fluid">
     <div class="page-header">
         <div class="row align-items-end">
@@ -43,7 +45,7 @@
 
                         <div class="form-group">
                             <label>Tax Rate</label>
-    
+
                             <select id="tax_rate" class="form-control">
                                 <option selected="selected" value="">Select Country</option>
                                 @foreach ($countries as $country)
@@ -56,27 +58,36 @@
                                 {{ $message }}
                             </span>
                             @enderror
-    
+
                         </div>
-    
+
                         <div class="form-group">
                             <label>Customer</label>
-    
-                            <select name="user_id" class="form-control">
-                                <option selected="selected" value="">Select Customer</option>
-                                @foreach ($customers as $customer)
-                                <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                                @endforeach
-    
-                            </select>
+
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <select name="user_id" class="form-control">
+                                        <option selected="selected" value="">Select Customer</option>
+                                        @foreach ($customers as $customer)
+                                        <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-sm-4 p-0">
+                                    <button type="button" data-toggle="modal" data-target="#customerModal"
+                                        class="btn btn-sm btn-primary">
+                                        <i class="ik ik-plus f-16"></i>
+                                    </button>
+                                </div>
+                            </div>
                             @error('user_id')
                             <span class="text-danger">
                                 {{ $message }}
                             </span>
                             @enderror
-    
+
                         </div>
-    
+
                         <div class="form-group">
                             <label>Issue Date</label>
                             <input type="date" name="issue_date" class="form-control" placeholder="Select Date">
@@ -92,10 +103,10 @@
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-    
+
                         <div class="form-group">
                             <label>Invoice Category</label>
-    
+
                             <select name="invoice_category_id" class="form-control">
                                 <option selected="selected" value="">Select Category</option>
                                 @foreach ($invoice_categories as $invoice_category)
@@ -106,7 +117,7 @@
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-    
+
                         <div class="form-group">
                             <label>Note</label>
                             <textarea name="notes" class="form-control h-123" placeholder="Enter Note"></textarea>
@@ -114,7 +125,7 @@
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-    
+
                     </div>
                 </div>
             </div>
@@ -141,8 +152,8 @@
                                     </tr>
                                 </thead>
                                 <tbody class="product-body">
-    
-                                    @error('products')                                        
+
+                                    @error('products')
                                     <tr>
                                         <td colspan="5">
                                             <span class="text-danger">{{ $message }}</span>
@@ -150,7 +161,7 @@
                                     </tr>
                                     @enderror
 
-                                    @error('total_amount')                                        
+                                    @error('total_amount')
                                     <tr>
                                         <td colspan="5">
                                             <span class="text-danger">{{ $message }}</span>
@@ -158,15 +169,15 @@
                                     </tr>
                                     @enderror
 
-                                    @error('tax_percentage')                                        
+                                    @error('tax_percentage')
                                     <tr>
                                         <td colspan="5">
                                             <span class="text-danger">{{ $message }}</span>
                                         </td>
                                     </tr>
                                     @enderror
-    
-    
+
+
                                 </tbody>
                                 <tfoot>
                                     <tr>
@@ -175,14 +186,14 @@
                                         <th id="total" class="text-right border-0">0</th>
                                         <td class="border-0"></td>
                                     </tr>
-    
+
                                     <tr>
                                         <td class="border-0" colspan="3"></td>
                                         <td>Tax (<span id="tax-per">0</span>%)</td>
                                         <td id="tax" class="text-right">0</td>
                                         <td></td>
                                     </tr>
-    
+
                                     <tr>
                                         <th class="border-0" colspan="3"></th>
                                         <th>Grand Total</th>
@@ -202,11 +213,42 @@
     </form>
 </div>
 
+<div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="customerModalLabel">Add Customer</h5>
+            </div>
+            <form id="customer-form" action="{{ route('create-user-api') }}" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="label">Name</div>
+                        <input type="text" required name="name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <div class="label">Email</div>
+                        <input type="text" required name="email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <div class="label">CIN number or File Number</div>
+                        <input type="text" required name="account_no" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <div class="label">Address</div>
+                        <input type="text" required name="address" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <script>
-
-
-
     let doc = document
     
     let submitButton = doc.querySelector(".submit-btn")
@@ -333,6 +375,31 @@
         calculateGrandTotal()
     })
 
+
+</script>
+
+<script>
+
+    let customerForm = doc.querySelector("#customer-form")
+
+    customerForm.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        const route = customerForm.action
+
+        const inputs = doc.querySelectorAll("#customer-form input")
+        const data = {}
+        inputs.forEach(input => {
+            data[input.name] = input.value
+        });
+
+        const request = await fetch(route, {
+            method : "POST",
+            body : JSON.stringify(data)
+        })
+
+        const response = await request.json()
+        console.log(response)
+    })
 
 </script>
 
